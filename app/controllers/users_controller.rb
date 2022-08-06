@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
+    # /^[a-zA-Z0-9]{6,}$/.random_example
     @users = User.all
   end
 

@@ -2,6 +2,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :authentication_keys => [:username]
 
+  has_many :devices
+
   validates :username, presence: true
   validates_uniqueness_of :username
 
