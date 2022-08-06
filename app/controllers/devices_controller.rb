@@ -1,4 +1,5 @@
 class DevicesController < ApplicationController
+  #before_action :authenticate_user!
   before_action :set_device, only: [:show, :edit, :update, :destroy]
 
   # GET /devices
@@ -22,7 +23,7 @@ class DevicesController < ApplicationController
   # POST /devices
   def create
     @device = Device.new(device_params)
-
+    set_device_id_and_password!
     if @device.save
       redirect_to @device, notice: 'Device was successfully created.'
     else
@@ -46,13 +47,17 @@ class DevicesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_device
-      @device = Device.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def device_params
-      params.require(:device).permit(:name, :device_identity)
-    end
+  def set_device_id_and_password!
+    @device.password = Device.pass
+    @device.user_id = current_user.id
+  end
+
+  def set_device
+    @device = Device.find(params[:id])
+  end
+
+  def device_params
+    params.require(:device).permit(:name, :device_identity)
+  end
 end
