@@ -13,10 +13,10 @@ class Devices::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  def destroy
+    Device.update(current_device.id, is_active: false)
+    super
+  end
 
   # protected
 

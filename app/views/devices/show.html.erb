@@ -12,7 +12,7 @@
 
 <p>
   <strong>Password:</strong>
-  <%= Device.pass %>
+  <%=  session[:password] %>
 </p>
 
 <%= link_to 'Edit', edit_device_path(@device) %> |

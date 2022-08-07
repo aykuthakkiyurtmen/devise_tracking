@@ -1,6 +1,7 @@
 class DevicesController < ApplicationController
-  #before_action :authenticate_user!
+  before_action :authenticate_user!
   before_action :set_device, only: [:show, :edit, :update, :destroy]
+  after_action  :clear_password_session, only: [:show]
 
   # GET /devices
   def index
@@ -23,7 +24,7 @@ class DevicesController < ApplicationController
   # POST /devices
   def create
     @device = Device.new(device_params)
-    set_device_id_and_password!
+    set_user_id_and_password!
     if @device.save
       redirect_to @device, notice: 'Device was successfully created.'
     else
@@ -48,8 +49,9 @@ class DevicesController < ApplicationController
 
   private
 
-  def set_device_id_and_password!
-    @device.password = Device.pass
+  def set_user_id_and_password!
+    session[:password] = @device.set_password
+    @device.password = session[:password]
     @device.user_id = current_user.id
   end
 
@@ -59,5 +61,9 @@ class DevicesController < ApplicationController
 
   def device_params
     params.require(:device).permit(:name, :device_identity)
+  end
+
+  def clear_password_session
+    session[:password] = nil
   end
 end

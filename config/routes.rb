@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :users, :except => [:create, :new]
-  root to: 'users#index'
+  root to: 'devices#index'
+  get 'welcome/index' => 'welcome#index'
 
 end

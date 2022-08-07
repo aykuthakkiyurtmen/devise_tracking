@@ -1,10 +1,10 @@
 class Device < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable, :authentication_keys => [:device_identity]
+
   belongs_to :user
-  before_save :set_access_token
+  before_create :set_identity
 
   def email_required?
     false
@@ -18,19 +18,11 @@ class Device < ApplicationRecord
     false
   end
 
-  def set_access_token
-    self.device_identity = generate_and_save_identity
+  def set_identity
+    self.device_identity = Generate::generate_identity
   end
 
-  def self.pass
-    1234567
-  end
-
-  def generate_and_save_identity
-    loop do
-      token =  /^[a-zA-Z0-9]{6,}$/.random_example
-
-      break token unless Device.where(device_identity: token).exists?
-    end
+  def set_password
+    Generate::generate_password
   end
 end
