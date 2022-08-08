@@ -4,7 +4,6 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    # /^[a-zA-Z0-9]{6,}$/.random_example
     @users = User.all
   end
 
@@ -48,12 +47,12 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
+
     def user_params
       params.require(:user).permit(:name, :surname)
     end

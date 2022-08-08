@@ -1,10 +1,13 @@
 class Device < ApplicationRecord
 
   devise :database_authenticatable,
-         :recoverable, :rememberable, :validatable, :authentication_keys => [:device_identity]
+         :rememberable, :validatable, :authentication_keys => [:device_identity]
 
   belongs_to :user
   before_create :set_identity
+
+  validates :name, length: { minimum: 4, maximum: 20 }, presence:true
+  validates_format_of :name, :with => Constants::NAME_PATTERN
 
   def email_required?
     false
